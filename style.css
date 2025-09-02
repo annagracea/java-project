@@ -29,3 +29,7 @@ button {
     padding: 10px 20px;
     cursor: pointer;
 }
+footer {
+  text-align: center;
+  padding: 15px;
+}
