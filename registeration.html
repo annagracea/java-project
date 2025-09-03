@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register as Donor - MapMyDonor</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        .blood-gradient {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+        }
+        
+        .floating-label {
+            transition: all 0.3s ease;
+        }
+        
+        .floating-label.active {
+            transform: translateY(-20px);
+            font-size: 0.75rem;
+            color: #dc2626;
+        }
+        
+        .step-card {
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.5s ease-in-out;
+        }
+        
+        .step-card.active {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .step-card.prev {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        
+        .blood-type-btn {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .blood-type-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(220, 38, 38, 0.2);
+        }
+        
+        .blood-type-btn.selected {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            color: white;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: #f3f4f6;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #dc2626 0%, #ef4444 100%);
+            transition: width 0.5s ease;
+            border-radius: 2px;
+        }
+        
+        .input-field {
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .blood-drop {
+            position: relative;
+        }
+        
+        .blood-drop::before {
+            content: "🩸";
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 1.2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="blood-gradient text-white py-4 shadow-lg">
+        <div class="container mx-auto px-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-tint text-2xl"></i>
+                <h1 class="text-2xl font-bold">MapMyDonor</h1>
+            </div>
+            <a href="#" class="text-white hover:text-red-200 transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Back to Home
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 max-w-2xl">
+        <!-- Progress Section -->
+        <div class="mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800">Become a Life Saver</h2>
+                <span class="text-sm text-gray-600">Step <span id="current-step">1</span> of 4</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill" style="width: 25%"></div>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 relative overflow-hidden">
+            <div class="blood-drop absolute top-4 right-4"></div>
+            
+            <!-- Step 1: Personal Information -->
+            <div id="step-1" class="step-card active">
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Personal Information</h3>
+                    <p class="text-gray-600">Tell us about yourself</p>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="relative">
+                        <label class="floating-label absolute left-3 top-3 text-gray-500 transition-all pointer-events-none">Full Name</label>
+                        <input type="text" class="input-field w-full px-3 py-3 rounded-lg outline-none" required>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="relative">
+                            <label class="floating-label absolute left-3 top-3 text-gray-500 transition-all pointer-events-none">Age</label>
+                            <input type="number" min="18" max="65" class="input-field w-full px-3 py-3 rounded-lg outline-none" required>
+                        </div>
+                        <div class="relative">
+                            <label class="floating-label absolute left-3 top-3 text-gray-500 transition-all pointer-events-none">Gender</label>
+                            <select class="input-field w-full px-3 py-3 rounded-lg outline-none">
+                                <option value="">Select</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="relative">
+                        <label class="floating-label absolute left-3 top-3 text-gray-500 transition-all pointer-events-none">Phone Number</label>
+                        <input type="tel" class="input-field w-full px-3 py-3 rounded-lg outline-none" required>
+                    </div>
+                    
+                    <div class="relative">
+                        <label class="floating-label absolute left-3 top-3 text-gray-500 transition-all pointer-events-none">Email Address</label>
+                        <input type="email" class="input-field w-full px-3 py-3 rounded-lg outline-none" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Blood Type & Medical Info -->
+            <div id="step-2" class="step-card">
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Blood Type & Medical Information</h3>
+                    <p class="text-gray-600">Essential medical details</p>
+                </div>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Blood Type</label>
+                        <div class="grid grid-cols-4 gap-3">
+                            <button type="button" class="blood-type-btn py-3 px-4 border-2 border-gray-200 rounded-lg text-center font-bold hover:border-red-500" data-blood="A+">A+</button>
+                            <button type="button" class="blood-type-btn py-3 px-4 border-2 border-gray-200 rounded-lg text-center font-bold hover:border-red-500" data-blood="A-">A-</button>
+                            <button type="button" class="blood-type-btn py-3 px-4 border-2 border-gray-200 rounded-lg text-center font-bold hover:border-red-500" data-blood="B+">B+</button>
+                            <button type="button" class="blood-type-btn py-3 px-4 border-2 border-gray-200 rounded-lg text-center font-bold hover:border-red-500" data-blood="B-">B-</button>
+                            <button type="button" class="blood-type-btn py-3 px-4 border-2 border-gray-200 rounded-lg text-center font-bold hover:border-red-500" data-blood="AB+">AB+</button>
+                            <button type="button" class="blood-type-btn py-3 px-4 border-2 border-gray-200 rounded-lg text-center font-bold hover:border-red-500" data-blood="AB-">AB-</button>
+                            <button type="button" class="blood-type-btn py-3 px-4 border-2 border-gray-200 rounded-lg text-center font-bold hover:border-red-500" data-blood="O+">O+</button>
+                            <button type="button" class="blood-type-btn py-3 px-4 border-2 border-gray-200 rounded-lg text-center font-bold hover:border-red-500" data-blood="O-">O-</button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="relative">
+                            <label class="floating-label absolute left-3 top-3 text-gray-500 transition-all pointer-events-none">Weight (kg)</label>
+                            <input type="number" min="50" class="input-field w-full px-3 py-3 rounded-lg outline-none" required>
+                        </div>
+                        <div class="relative">
+                            <label class="floating-label absolute left-3 top-3 text-gray-500 transition-all pointer-events-none">Height (cm)</label>
+                            <input type="number" min="150" class="input-field w-full px-3 py-3 rounded-lg outline-none">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Medical Conditions (if any)</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2 text-red-600">
+                                <span class="text-sm">Diabetes</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2 text-red-600">
+                                <span class="text-sm">Hypertension</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2 text-red-600">
+                                <span class="text-sm">Heart Disease</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2 text-red-600">
+                                <span class="text-sm">None of the above</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Location & Availability -->
+            <div id="step-3" class="step-card">
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Location & Availability</h3>
+                    <p class="text-gray-600">Where and when can you donate?</p>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="relative">
+                        <label class="floating-label absolute left-3 top-3 text-gray-500 transition-all pointer-events-none">Street Address</label>
+                        <input type="text" class="input-field w-full px-3 py-3 rounded-lg outline-none" required>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="relative">
+                            <label class="floating-label absolute left-3 top-3 text-gray-500 transition-all pointer-events-none">City</label>
+                            <input type="text" class="input-field w-full px-3 py-3 rounded-lg outline-none" required>
+                        </div>
+                        <div class="relative">
+                            <label class="floating-label absolute left-3 top-3 text-gray-500 transition-all pointer-events-none">PIN Code</label>
+                            <input type="text" class="input-field w-full px-3 py-3 rounded-lg outline-none" required>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Available Days</label>
+                        <div class="grid grid-cols-4 gap-2">
+                            <label class="flex items-center text-sm">
+                                <input type="checkbox" class="mr-2 text-red-600">
+                                <span>Mon</span>
+                            </label>
+                            <label class="flex items-center text-sm">
+                                <input type="checkbox" class="mr-2 text-red-600">
+                                <span>Tue</span>
+                            </label>
+                            <label class="flex items-center text-sm">
+                                <input type="checkbox" class="mr-2 text-red-600">
+                                <span>Wed</span>
+                            </label>
+                            <label class="flex items-center text-sm">
+                                <input type="checkbox" class="mr-2 text-red-600">
+                                <span>Thu</span>
+                            </label>
+                            <label class="flex items-center text-sm">
+                                <input type="checkbox" class="mr-2 text-red-600">
+                                <span>Fri</span>
+                            </label>
+                            <label class="flex items-center text-sm">
+                                <input type="checkbox" class="mr-2 text-red-600">
+                                <span>Sat</span>
+                            </label>
+                            <label class="flex items-center text-sm">
+                                <input type="checkbox" class="mr-2 text-red-600">
+                                <span>Sun</span>
+                            </label>
+                            <label class="flex items-center text-sm">
+                                <input type="checkbox" class="mr-2 text-red-600">
+                                <span>Emergency</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="relative">
+                            <label class="floating-label absolute left-3 top-3 text-gray-500 transition-all pointer-events-none">Preferred Time From</label>
+                            <input type="time" class="input-field w-full px-3 py-3 rounded-lg outline-none">
+                        </div>
+                        <div class="relative">
+                            <label class="floating-label absolute left-3 top-3 text-gray-500 transition-all pointer-events-none">Preferred Time To</label>
+                            <input type="time" class="input-field w-full px-3 py-3 rounded-lg outline-none">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Final Details & Confirmation -->
+            <div id="step-4" class="step-card">
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Final Details</h3>
+                    <p class="text-gray-600">Almost done! Just a few more details</p>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="relative">
+                        <label class="floating-label absolute left-3 top-3 text-gray-500 transition-all pointer-events-none">Emergency Contact Name</label>
+                        <input type="text" class="input-field w-full px-3 py-3 rounded-lg outline-none" required>
+                    </div>
+                    
+                    <div class="relative">
+                        <label class="floating-label absolute left-3 top-3 text-gray-500 transition-all pointer-events-none">Emergency Contact Phone</label>
+                        <input type="tel" class="input-field w-full px-3 py-3 rounded-lg outline-none" required>
+                    </div>
+                    
+                    <div class="relative">
+                        <label class="floating-label absolute left-3 top-3 text-gray-500 transition-all pointer-events-none">Last Donation Date (if any)</label>
+                        <input type="date" class="input-field w-full px-3 py-3 rounded-lg outline-none">
+                    </div>
+                    
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-info-circle text-red-500 mt-1 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold text-red-800 mb-2">Important Notes:</h4>
+                                <ul class="text-sm text-red-700 space-y-1">
+                                    <li>• You must be between 18-65 years old</li>
+                                    <li>• Minimum weight requirement: 50kg</li>
+                                    <li>• Wait 3 months between donations</li>
+                                    <li>• Be in good health condition</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="flex items-start">
+                            <input type="checkbox" class="mr-3 mt-1 text-red-600" required>
+                            <span class="text-sm text-gray-700">I confirm that all information provided is accurate and I meet the eligibility criteria for blood donation.</span>
+                        </label>
+                        <label class="flex items-start">
+                            <input type="checkbox" class="mr-3 mt-1 text-red-600" required>
+                            <span class="text-sm text-gray-700">I agree to the Terms of Service and Privacy Policy.</span>
+                        </label>
+                        <label class="flex items-start">
+                            <input type="checkbox" class="mr-3 mt-1 text-red-600">
+                            <span class="text-sm text-gray-700">I would like to receive notifications for emergency blood requests in my area.</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between mt-8 pt-6 border-t border-gray-200">
+                <button id="prev-btn" class="px-6 py-3 text-gray-600 hover:text-gray-800 transition-colors hidden">
+                    <i class="fas fa-arrow-left mr-2"></i>Previous
+                </button>
+                <div class="flex space-x-3 ml-auto">
+                    <button id="next-btn" class="blood-gradient text-white px-8 py-3 rounded-lg hover:shadow-lg transition-all pulse-animation">
+                        Next <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <button id="submit-btn" class="blood-gradient text-white px-8 py-3 rounded-lg hover:shadow-lg transition-all hidden">
+                        <i class="fas fa-heart mr-2"></i>Register as Donor
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+        
+        // Floating label functionality
+        document.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('focus', () => {
+                const label = input.previousElementSibling;
+                if (label && label.classList.contains('floating-label')) {
+                    label.classList.add('active');
+                }
+            });
+            
+            input.addEventListener('blur', () => {
+                const label = input.previousElementSibling;
+                if (label && label.classList.contains('floating-label') && input.value === '') {
+                    label.classList.remove('active');
+                }
+            });
+            
+            // Check if input has value on load
+            if (input.value !== '') {
+                const label = input.previousElementSibling;
+                if (label && label.classList.contains('floating-label')) {
+                    label.classList.add('active');
+                }
+            }
+        });
+        
+        // Blood type selection
+        document.querySelectorAll('.blood-type-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.blood-type-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+            });
+        });
+        
+        // Step navigation
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('current-step').textContent = currentStep;
+        }
+        
+        function showStep(step) {
+            document.querySelectorAll('.step-card').forEach((card, index) => {
+                card.classList.remove('active', 'prev');
+                if (index + 1 === step) {
+                    card.classList.add('active');
+                } else if (index + 1 < step) {
+                    card.classList.add('prev');
+                }
+            });
+            
+            // Update buttons
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            if (step === 1) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+            
+            if (step === totalSteps) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+        }
+        
+        document.getElementById('next-btn').addEventListener('click', () => {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+                updateProgress();
+            }
+        });
+        
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+                updateProgress();
+            }
+        });
+        
+        document.getElementById('submit-btn').addEventListener('click', () => {
+            // Add form validation here
+            alert('Thank you for registering as a donor! Your application will be reviewed and you will be contacted soon.');
+            // In a real application, you would submit the form data here
+        });
+        
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
