@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Donors - MapMyDonor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <style>
+    #map {
+      height: 400px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Navbar -->
+  <nav class="bg-white shadow-md p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold text-red-600">MapMyDonor</h1>
+    <a href="homepage.html" class="text-gray-700 hover:text-red-600">Home</a>
+  </nav>
+
+  <!-- Page Container -->
+  <div class="max-w-6xl mx-auto py-10 px-4 space-y-10">
+
+    <!-- Search Filters -->
+    <div class="bg-white shadow-lg rounded-xl p-6">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Search Donors</h2>
+      <form class="grid md:grid-cols-3 gap-6">
+        <!-- Blood Group -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Blood Group</label>
+          <select class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500">
+            <option value="">Select</option>
+            <option>A+</option>
+            <option>A-</option>
+            <option>B+</option>
+            <option>B-</option>
+            <option>O+</option>
+            <option>O-</option>
+            <option>AB+</option>
+            <option>AB-</option>
+          </select>
+        </div>
+
+        <!-- City -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">City</label>
+          <input type="text" placeholder="Enter City"
+            class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500" />
+        </div>
+
+        <!-- Availability -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Availability</label>
+          <select class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500">
+            <option value="">Anytime</option>
+            <option>Available Now</option>
+            <option>Weekends Only</option>
+          </select>
+        </div>
+      </form>
+      <button class="mt-6 w-full md:w-auto bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700">
+        Search
+      </button>
+    </div>
+
+    <!-- Results + Map -->
+    <div class="grid md:grid-cols-2 gap-8">
+      
+      <!-- Donor List -->
+      <div class="bg-white shadow-lg rounded-xl p-6 overflow-y-auto max-h-[400px]">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Donor Results</h3>
+        <ul class="space-y-4">
+          <!-- Example Donor -->
+          <li class="p-4 border rounded-lg hover:shadow-md">
+            <p class="font-semibold text-gray-800">John Doe</p>
+            <p class="text-gray-600 text-sm">Blood Group: A+ | City: Kochi</p>
+            <p class="text-green-600 font-medium">✅ Available Now</p>
+          </li>
+          <li class="p-4 border rounded-lg hover:shadow-md">
+            <p class="font-semibold text-gray-800">Priya Sharma</p>
+            <p class="text-gray-600 text-sm">Blood Group: O- | City: Trivandrum</p>
+            <p class="text-red-600 font-medium">❌ Not Available</p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Map -->
+      <div>
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Map View</h3>
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Initialize Map
+    var map = L.map('map').setView([10.8505, 76.2711], 7); // Kerala coordinates
+
+    // Load OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Example donor markers
+    var donors = [
+      { name: "John Doe", group: "A+", city: "Kochi", lat: 9.9312, lng: 76.2673 },
+      { name: "Priya Sharma", group: "O-", city: "Trivandrum", lat: 8.5241, lng: 76.9366 }
+    ];
+
+    donors.forEach(donor => {
+      L.marker([donor.lat, donor.lng]).addTo(map)
+        .bindPopup(<b>${donor.name}</b><br>Blood Group: ${donor.group}<br>City: ${donor.city});
+    });
+  </script>
+</body>
+</html>
