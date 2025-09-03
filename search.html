@@ -117,7 +117,7 @@
 
     donors.forEach(donor => {
       L.marker([donor.lat, donor.lng]).addTo(map)
-        .bindPopup(<b>${donor.name}</b><br>Blood Group: ${donor.group}<br>City: ${donor.city});
+        .bindPopup(`<b>${donor.name}</b><br>Blood Group: ${donor.group}<br>City: ${donor.city}`);
     });
   </script>
 </body>
