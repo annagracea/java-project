@@ -382,104 +382,157 @@
         </div>
     </main>
 
-    <script>
-        let currentStep = 1;
-        const totalSteps = 4;
-        
-        // Floating label functionality
-        document.querySelectorAll('input, select').forEach(input => {
-            input.addEventListener('focus', () => {
-                const label = input.previousElementSibling;
-                if (label && label.classList.contains('floating-label')) {
-                    label.classList.add('active');
-                }
-            });
-            
-            input.addEventListener('blur', () => {
-                const label = input.previousElementSibling;
-                if (label && label.classList.contains('floating-label') && input.value === '') {
-                    label.classList.remove('active');
-                }
-            });
-            
-            // Check if input has value on load
-            if (input.value !== '') {
-                const label = input.previousElementSibling;
-                if (label && label.classList.contains('floating-label')) {
-                    label.classList.add('active');
-                }
+<script>
+    let currentStep = 1;
+    const totalSteps = 4;
+
+    // Floating label functionality
+    document.querySelectorAll('input, select').forEach(input => {
+        input.addEventListener('focus', () => {
+            const label = input.previousElementSibling;
+            if (label && label.classList.contains('floating-label')) {
+                label.classList.add('active');
             }
         });
-        
-        // Blood type selection
-        document.querySelectorAll('.blood-type-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.blood-type-btn').forEach(b => b.classList.remove('selected'));
-                btn.classList.add('selected');
-            });
-        });
-        
-        // Step navigation
-        function updateProgress() {
-            const progress = (currentStep / totalSteps) * 100;
-            document.getElementById('progress-fill').style.width = progress + '%';
-            document.getElementById('current-step').textContent = currentStep;
-        }
-        
-        function showStep(step) {
-            document.querySelectorAll('.step-card').forEach((card, index) => {
-                card.classList.remove('active', 'prev');
-                if (index + 1 === step) {
-                    card.classList.add('active');
-                } else if (index + 1 < step) {
-                    card.classList.add('prev');
-                }
-            });
-            
-            // Update buttons
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const submitBtn = document.getElementById('submit-btn');
-            
-            if (step === 1) {
-                prevBtn.classList.add('hidden');
-            } else {
-                prevBtn.classList.remove('hidden');
+
+        input.addEventListener('blur', () => {
+            const label = input.previousElementSibling;
+            if (label && label.classList.contains('floating-label') && input.value === '') {
+                label.classList.remove('active');
             }
-            
-            if (step === totalSteps) {
-                nextBtn.classList.add('hidden');
-                submitBtn.classList.remove('hidden');
-            } else {
-                nextBtn.classList.remove('hidden');
-                submitBtn.classList.add('hidden');
+        });
+
+        if (input.value !== '') {
+            const label = input.previousElementSibling;
+            if (label && label.classList.contains('floating-label')) {
+                label.classList.add('active');
             }
         }
-        
-        document.getElementById('next-btn').addEventListener('click', () => {
-            if (currentStep < totalSteps) {
-                currentStep++;
-                showStep(currentStep);
-                updateProgress();
+    });
+
+    // Blood type selection
+    document.querySelectorAll('.blood-type-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.blood-type-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        });
+    });
+
+    // Step navigation
+    function updateProgress() {
+        const progress = (currentStep / totalSteps) * 100;
+        document.getElementById('progress-fill').style.width = progress + '%';
+        document.getElementById('current-step').textContent = currentStep;
+    }
+
+    function showStep(step) {
+        document.querySelectorAll('.step-card').forEach((card, index) => {
+            card.classList.remove('active', 'prev');
+            if (index + 1 === step) {
+                card.classList.add('active');
+            } else if (index + 1 < step) {
+                card.classList.add('prev');
             }
         });
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+
+        if (step === 1) {
+            prevBtn.classList.add('hidden');
+        } else {
+            prevBtn.classList.remove('hidden');
+        }
+
+        if (step === totalSteps) {
+            nextBtn.classList.add('hidden');
+            submitBtn.classList.remove('hidden');
+        } else {
+            nextBtn.classList.remove('hidden');
+            submitBtn.classList.add('hidden');
+        }
+    }
+
+    // Validation function for each step
+    function validateCurrentStep() {
+        const activeStep = document.querySelector('.step-card.active');
+        const inputs = activeStep.querySelectorAll('input, select');
         
-        document.getElementById('prev-btn').addEventListener('click', () => {
-            if (currentStep > 1) {
-                currentStep--;
-                showStep(currentStep);
-                updateProgress();
+        for (let input of inputs) {
+            if (input.type !== "button" && input.value.trim() === "") {
+                alert("⚠️ All fields must be filled!");
+                return false;
             }
-        });
-        
-        document.getElementById('submit-btn').addEventListener('click', () => {
-            // Add form validation here
-            alert('Thank you for registering as a donor! Your application will be reviewed and you will be contacted soon.');
-            // In a real application, you would submit the form data here
-        });
-        
-        // Initialize
-        updateProgress();
-    </script>
+        }
+
+        // Extra validation for Step 1
+        if (currentStep === 1) {
+            const fullName = document.querySelector('input[type="text"]').value.trim();
+            const email = document.querySelector('input[type="email"]').value.trim();
+            const phone = document.querySelector('input[type="tel"]').value.trim();
+            const age = parseInt(document.querySelector('input[type="number"]').value.trim(), 10);
+
+            // Full name
+            const nameRegex = /^[A-Za-z\s]+$/;
+            if (!nameRegex.test(fullName)) {
+                alert("Full Name should contain only alphabets.");
+                return false;
+            }
+
+            // Email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+
+            // Phone
+            const phoneRegex = /^[0-9]{10}$/;
+            if (!phoneRegex.test(phone)) {
+                alert("Phone Number must be exactly 10 digits.");
+                return false;
+            }
+
+            // Age
+            if (isNaN(age) || age < 18 || age > 65) {
+                alert("Age must be between 18 and 65.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    document.getElementById('next-btn').addEventListener('click', () => {
+        if (!validateCurrentStep()) {
+            return; // Stop if invalid
+        }
+
+        if (currentStep < totalSteps) {
+            currentStep++;
+            showStep(currentStep);
+            updateProgress();
+        }
+    });
+
+    document.getElementById('prev-btn').addEventListener('click', () => {
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
+            updateProgress();
+        }
+    });
+
+    document.getElementById('submit-btn').addEventListener('click', () => {
+        if (!validateCurrentStep()) {
+            return;
+        }
+        alert('✅ Thank you for registering as a donor! Your application will be reviewed and you will be contacted soon.');
+    });
+
+    // Initialize
+    updateProgress();
+</script>
 </body>
 </html>
