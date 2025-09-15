@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eligibility Checker - MapMyDonor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- Navbar -->
+  <nav class="bg-red-600 text-white shadow-lg">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold">MapMyDonor</h1>
+      <div class="space-x-6">
+        <a href="guidelines.html">Guidelines</a>
+        <a href="eligibility.html" class="underline">Eligibility</a>
+        <a href="health-safety.html">Health & Safety</a>
+        <a href="emergency-protocols.html">Emergency</a>
+        <a href="success-stories.html">Stories</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-r from-red-600 to-red-400 text-white py-16 text-center">
+    <h1 class="text-4xl font-bold mb-4">Eligibility Checker</h1>
+    <p class="text-lg">Find out if you are eligible to donate blood.</p>
+  </section>
+
+  <!-- Content -->
+  <section class="max-w-2xl mx-auto p-8">
+    <div class="bg-white shadow-lg rounded-xl p-6">
+      <form class="space-y-6">
+        <label class="block">
+          <span class="font-medium">Age:</span>
+          <input type="number" min="18" max="65" class="w-full mt-1 p-2 border rounded-lg">
+        </label>
+        <label class="block">
+          <span class="font-medium">Weight (kg):</span>
+          <input type="number" min="50" class="w-full mt-1 p-2 border rounded-lg">
+        </label>
+        <label class="block">
+          <span class="font-medium">Any recent illness?</span>
+          <select class="w-full mt-1 p-2 border rounded-lg">
+            <option>No</option>
+            <option>Yes</option>
+          </select>
+        </label>
+        <button type="submit" class="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition">
+          Check Eligibility
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-6 mt-10 text-center text-gray-600">
+    © 2025 MapMyDonor 
+  </footer>
+
+</body>
+</html>
